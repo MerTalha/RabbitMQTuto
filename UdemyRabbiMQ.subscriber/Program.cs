@@ -12,24 +12,31 @@ var channel = connection.CreateModel();
 
 //channel.QueueDeclare("hello-queue", true, false, false);
 
-var randomQueueName = channel.QueueDeclare().QueueName;
+//var randomQueueName = channel.QueueDeclare().QueueName;
 
-channel.QueueBind(randomQueueName, "logs-fanout", "", null);
+//channel.QueueBind(randomQueueName, "logs-fanout", "", null);
 
 channel.BasicQos(0,1,false);
 
 var consumer = new EventingBasicConsumer(channel);
 
-channel.BasicConsume(randomQueueName, false, consumer);
+var queueName = "direct-queueCritical";
+channel.BasicConsume(queueName, false, consumer);
+
+Console.WriteLine("Logları dinleniyor...");
 
 consumer.Received += (object? sender, BasicDeliverEventArgs e) =>
 {
     var message = Encoding.UTF8.GetString(e.Body.ToArray());
 
-    Console.WriteLine(message);
+    Thread.Sleep(1500);
+    Console.WriteLine("Gelen Mesaj:" + message);
+
+    // File.AppendAllText("log-critical.txt", message+ "\n");
 
     channel.BasicAck(e.DeliveryTag, false);
 };
+
 
 
 
