@@ -20,7 +20,11 @@ channel.BasicQos(0,1,false);
 
 var consumer = new EventingBasicConsumer(channel);
 
-var queueName = "direct-queueError";
+var queueName = channel.QueueDeclare().QueueName;
+var routekey = "*.Error.*";
+
+channel.QueueBind(queueName, "logs-topic", routekey);
+
 channel.BasicConsume(queueName, false, consumer);
 
 Console.WriteLine("Logları dinleniyor...");
