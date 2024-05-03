@@ -42,45 +42,49 @@ namespace UdemyRabbitMQWeb_Watermark.BackgroundServices
         private Task Consumer_Received(object sender, BasicDeliverEventArgs @event)
         {
 
+            Task.Delay(10000).Wait();
+
+
             try
             {
-                var siteName = "www.mysite.com";
-
                 var productImageCreatedEvent = JsonSerializer.Deserialize<productImageCreatedEvent>(Encoding.UTF8.GetString(@event.Body.ToArray()));
 
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images", productImageCreatedEvent.ImageName);
+
+                var siteName = "wwww.mysite.com";
 
                 using var img = Image.FromFile(path);
 
                 using var graphic = Graphics.FromImage(img);
 
-                var font = new Font(FontFamily.GenericMonospace, 32, FontStyle.Bold, GraphicsUnit.Pixel);
+                var font = new Font(FontFamily.GenericMonospace, 40, FontStyle.Bold, GraphicsUnit.Pixel);
 
                 var textSize = graphic.MeasureString(siteName, font);
 
                 var color = Color.FromArgb(128, 255, 255, 255);
-
                 var brush = new SolidBrush(color);
 
                 var position = new Point(img.Width - ((int)textSize.Width + 30), img.Height - ((int)textSize.Height + 30));
+
 
                 graphic.DrawString(siteName, font, brush, position);
 
                 img.Save("wwwroot/Images/watermarks/" + productImageCreatedEvent.ImageName);
 
+
                 img.Dispose();
                 graphic.Dispose();
 
-                _channel.BasicAck(@event.DeliveryTag, false); 
+                _channel.BasicAck(@event.DeliveryTag, false);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+
+                _logger.LogError(ex.Message);
             }
 
             return Task.CompletedTask;
 
-            
         }
 
         public override Task StopAsync(CancellationToken cancellationToken)
