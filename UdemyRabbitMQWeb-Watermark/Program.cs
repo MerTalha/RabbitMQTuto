@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using RabbitMQ.Client;
 using System.Configuration;
+using UdemyRabbitMQWeb_Watermark.BackgroundServices;
 using UdemyRabbitMQWeb_Watermark.Models;
 using UdemyRabbitMQWeb_Watermark.Services;
 
@@ -16,6 +17,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseInMemoryDatabase(databaseName: "productDb");
 });
+
+builder.Services.AddHostedService<ImageWatermarkProcessBackgroundService>();
 
 var app = builder.Build();
 
