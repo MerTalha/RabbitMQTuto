@@ -9,7 +9,6 @@ using UdemyRabbitMQWeb_Watermark.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton(sp => new ConnectionFactory() { Uri = new Uri(builder.Configuration.GetConnectionString("RabbitMQ")), DispatchConsumersAsync = true});
 builder.Services.AddSingleton<RabbitMQClientService>();
 builder.Services.AddSingleton<RabbitMQPublisher>();
@@ -19,6 +18,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 
 builder.Services.AddHostedService<ImageWatermarkProcessBackgroundService>();
+builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 

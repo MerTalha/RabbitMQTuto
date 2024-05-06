@@ -42,14 +42,15 @@ namespace UdemyRabbitMQWeb_Watermark.BackgroundServices
         private Task Consumer_Received(object sender, BasicDeliverEventArgs @event)
         {
 
-            Task.Delay(10000).Wait();
+            Task.Delay(5000).Wait();
 
 
             try
+            
             {
                 var productImageCreatedEvent = JsonSerializer.Deserialize<productImageCreatedEvent>(Encoding.UTF8.GetString(@event.Body.ToArray()));
 
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images", productImageCreatedEvent.ImageName);
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Images", productImageCreatedEvent.ImageName);
 
                 var siteName = "wwww.mysite.com";
 
