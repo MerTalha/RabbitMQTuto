@@ -12,7 +12,7 @@ using UdemyRabbitMQWeb.ExcelCreate.Models;
 namespace UdemyRabbitMQWeb.ExcelCreate.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240506112452_initial")]
+    [Migration("20240507102501_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -238,7 +238,6 @@ namespace UdemyRabbitMQWeb.ExcelCreate.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FilePath")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("FileStatus")
