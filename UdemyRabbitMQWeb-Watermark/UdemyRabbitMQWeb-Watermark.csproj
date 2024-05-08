@@ -25,4 +25,8 @@
     <Folder Include="wwwroot\Images\watermarks\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Shared\Shared.csproj" />
+  </ItemGroup>
+
 </Project>
