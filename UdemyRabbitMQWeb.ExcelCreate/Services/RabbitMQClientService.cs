@@ -8,7 +8,7 @@ namespace UdemyRabbitMQWeb.ExcelCreate.Services
         private IConnection _connection;
         private IModel _channel;
         public static string ExchangeName = "ExcelDirectExchange";
-        public static string RoutingExcel = "watermark-excel-file";
+        public static string RoutingExcel = "excel-route-file";
         public static string QueueName = "queue-excel-file";
 
         private readonly ILogger<RabbitMQClientService> _logger;
