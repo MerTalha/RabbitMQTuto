@@ -38,7 +38,7 @@ namespace UdemyRabbitMQWeb.ExcelCreate.Controllers
 
             await _appDbContext.SaveChangesAsync();
 
-            _rabbitMQPublisher.Publish(new Shared.CreateExcelMessage() { FileId = userFile.Id, UserId = user.Id });
+            _rabbitMQPublisher.Publish(new Shared.CreateExcelMessage() { FileId = userFile.Id });
 
             TempData["StartCreatingExcel"] = true;
 
