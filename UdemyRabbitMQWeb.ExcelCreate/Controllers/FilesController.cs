@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using UdemyRabbitMQWeb.ExcelCreate.Hubs;
 using UdemyRabbitMQWeb.ExcelCreate.Models;
 
 namespace UdemyRabbitMQWeb.ExcelCreate.Controllers
@@ -10,10 +12,11 @@ namespace UdemyRabbitMQWeb.ExcelCreate.Controllers
     public class FilesController : ControllerBase
     {
         private readonly AppDbContext _appDbContext;
-
-        public FilesController(AppDbContext appDbContext)
+        private readonly IHubContext<MyHub> _hubContext;
+        public FilesController(AppDbContext appDbContext, IHubContext<MyHub> hubContext)
         {
             _appDbContext = appDbContext;
+            _hubContext = hubContext;
         }
 
         [HttpPost]
@@ -36,7 +39,9 @@ namespace UdemyRabbitMQWeb.ExcelCreate.Controllers
             userFile.FileStatus = FileStatus.Completed;
             
             await _appDbContext.SaveChangesAsync();
-            //SignalR Notification oluşturulacak
+
+            await _hubContext.Clients.User(userFile.UserId).SendAsync("CompletedFile");
+
 
             return Ok();
 
